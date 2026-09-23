@@ -71,13 +71,10 @@
             right: 0;
             z-index: 1000;
             padding: 18px 0;
-            background: transparent; /* фон вынесен в ::before */
+            background: transparent;
             transition: padding 0.35s, box-shadow 0.35s;
         }
 
-        /* Фон шапки — отдельный слой с z-index 50.
-           Он перекрывает панель навигации (z-index 10) в закрытом состоянии,
-           но находится ниже лого (60) и бургера (70). */
         .header::before {
             content: '';
             position: absolute;
@@ -105,7 +102,7 @@
             gap: 12px;
             text-decoration: none;
             position: relative;
-            z-index: 60; /* выше фона шапки (50) */
+            z-index: 60;
         }
 
         .logo__icon {
@@ -153,13 +150,12 @@
             text-transform: uppercase;
         }
 
-        /* ============ NAV — DESKTOP ============ */
         .nav {
             display: flex;
             align-items: center;
             gap: 32px;
             position: relative;
-            z-index: 60; /* выше фона шапки (50) — на десктопе навигация видна */
+            z-index: 60;
         }
 
         .nav__link {
@@ -293,7 +289,7 @@
             border: none;
             padding: 5px;
             position: relative;
-            z-index: 70; /* выше фона шапки (50) */
+            z-index: 70;
         }
 
         .burger span {
@@ -530,6 +526,10 @@
             flex-direction: column;
         }
 
+        .service-card--no-price {
+            cursor: default;
+        }
+
         .service-card::before {
             content: '';
             position: absolute;
@@ -576,12 +576,33 @@
             flex-grow: 1;
         }
 
+        .service-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: auto;
+        }
+
         .service-card__price {
             font-weight: 700;
             color: var(--accent);
             font-size: 16px;
             letter-spacing: 0.3px;
-            margin-top: auto;
+        }
+
+        .service-card__more {
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.3s;
+        }
+
+        .service-card:hover .service-card__more {
+            color: var(--accent);
         }
 
         /* ============ ADVANTAGES ============ */
@@ -639,8 +660,6 @@
 
         /* ============ FEATURES ============ */
         .features { padding: 100px 0; background: var(--bg-dark); }
-
-        .features-wrapper { display: block; }
 
         .features-list {
             display: flex;
@@ -846,6 +865,15 @@
         }
         .contact-info__value a:hover { color: var(--accent); }
 
+        .contact-info__hint {
+            font-size: 12px;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
         .map-wrapper {
             border-radius: var(--radius);
             overflow: hidden;
@@ -928,6 +956,10 @@
 
         .modal-overlay.active .modal { transform: translateY(0) scale(1); }
 
+        .modal--wide {
+            max-width: 620px;
+        }
+
         .modal__close {
             position: absolute;
             top: 16px;
@@ -944,6 +976,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            z-index: 2;
         }
         .modal__close:hover {
             background: rgba(255, 59, 59, 0.15);
@@ -956,11 +989,76 @@
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 8px;
+            padding-right: 40px;
         }
         .modal__text {
             color: var(--text-secondary);
             margin-bottom: 24px;
             font-size: 15px;
+        }
+
+        /* Price list inside modal */
+        .price-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .price-row:hover {
+            border-color: var(--border-hover);
+            background: rgba(255, 59, 59, 0.05);
+        }
+
+        .price-row__name {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .price-row__value {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 14px;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        .price-note {
+            margin-top: 20px;
+            padding: 14px 18px;
+            background: rgba(255, 59, 59, 0.06);
+            border: 1px solid rgba(255, 59, 59, 0.2);
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .price-actions {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .price-actions .btn-primary,
+        .price-actions .btn-outline {
+            flex: 1;
+            justify-content: center;
+            min-width: 160px;
         }
 
         .form-group { margin-bottom: 18px; }
@@ -1030,9 +1128,6 @@
                 padding: 14px 0;
             }
 
-            /* Панель выезжает ИЗ-ПОД шапки.
-               z-index 10 ниже, чем у фона шапки (50) — поэтому в закрытом состоянии
-               панель физически прячется ЗА фон шапки. */
             .nav {
                 position: fixed;
                 top: var(--header-h);
@@ -1055,7 +1150,7 @@
                 border-radius: 0 0 24px 24px;
                 box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7);
                 overflow-y: auto;
-                z-index: 10; /* НИЖЕ фона шапки (50) — прячется за ней */
+                z-index: 10;
                 margin: 0;
             }
             .nav.active { transform: translateY(0); }
@@ -1101,6 +1196,7 @@
             .footer__links { justify-content: center; flex-wrap: wrap; }
 
             .modal { padding: 28px 22px; }
+            .modal--wide { padding: 28px 22px; }
         }
 
         @media (max-width: 480px) {
@@ -1120,6 +1216,9 @@
             .hero__actions { flex-direction: column; width: 100%; }
             .advantages-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 26px; }
+            .price-row { padding: 12px 14px; }
+            .price-row__name { font-size: 13px; }
+            .price-row__value { font-size: 13px; }
         }
 
         .reveal {
@@ -1218,49 +1317,69 @@
         <div class="container">
             <span class="section-tag">01 / Услуги</span>
             <h2 class="section-title">Что мы делаем</h2>
-            <p class="section-subtitle">Полный спектр услуг по ремонту и обслуживанию автомобилей любых марок — от классики до современных иномарок.</p>
+            <p class="section-subtitle">Полный спектр услуг по ремонту и обслуживанию автомобилей любых марок — от классики до современных иномарок. Нажмите на карточку, чтобы увидеть подробный прайс-лист.</p>
             <div class="services-grid">
-                <div class="service-card reveal">
+                <div class="service-card reveal" onclick="openPrice('engine')">
                     <img src="img/car2.jpg" alt="Ремонт двигателей" class="service-card__image">
                     <h3 class="service-card__title">Ремонт двигателей</h3>
                     <p class="service-card__text">Капитальный и частичный ремонт ДВС. Гарантия.</p>
-                    <div class="service-card__price">от 15 000 ₽</div>
+                    <div class="service-card__footer">
+                        <div class="service-card__price">от 15 000 ₽</div>
+                        <div class="service-card__more">Прайс →</div>
+                    </div>
                 </div>
-                <div class="service-card reveal reveal-delay-1">
+                <div class="service-card reveal reveal-delay-1" onclick="openPrice('diagnostics')">
                     <img src="img/car3.jpg" alt="Диагностика" class="service-card__image">
                     <h3 class="service-card__title">Диагностика</h3>
                     <p class="service-card__text">Компьютерная диагностика всех систем.</p>
-                    <div class="service-card__price">от 1 000 ₽</div>
+                    <div class="service-card__footer">
+                        <div class="service-card__price">от 1 000 ₽</div>
+                        <div class="service-card__more">Прайс →</div>
+                    </div>
                 </div>
-                <div class="service-card reveal reveal-delay-2">
+                <div class="service-card reveal reveal-delay-2" onclick="openPrice('suspension')">
                     <img src="img/car4.jpg" alt="Ходовая часть" class="service-card__image">
                     <h3 class="service-card__title">Ходовая часть</h3>
                     <p class="service-card__text">Замена амортизаторов, рычагов, стоек.</p>
-                    <div class="service-card__price">от 2 500 ₽</div>
+                    <div class="service-card__footer">
+                        <div class="service-card__price">от 2 500 ₽</div>
+                        <div class="service-card__more">Прайс →</div>
+                    </div>
                 </div>
-                <div class="service-card reveal reveal-delay-3">
-                    <img src="img/car5.jpg" alt="Электрика" class="service-card__image">
-                    <h3 class="service-card__title">Электрика</h3>
-                    <p class="service-card__text">Ремонт проводки, генераторов, стартеров.</p>
-                    <div class="service-card__price">от 1 500 ₽</div>
+                <div class="service-card service-card--no-price reveal reveal-delay-3">
+                    <img src="img/car5.jpg" alt="Токарные работы" class="service-card__image">
+                    <h3 class="service-card__title">Токарные работы</h3>
+                    <p class="service-card__text">Проточка дисков, изготовление втулок, шпилек, переходников и других деталей по образцу.</p>
+                    <div class="service-card__footer">
+                        <div class="service-card__price">по запросу</div>
+                    </div>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" onclick="openPrice('oil')">
                     <img src="img/car6.jpg" alt="Замена масла и фильтров" class="service-card__image">
                     <h3 class="service-card__title">Замена масла и фильтров</h3>
                     <p class="service-card__text">Быстрая замена масла и фильтров.</p>
-                    <div class="service-card__price">от 800 ₽</div>
+                    <div class="service-card__footer">
+                        <div class="service-card__price">от 800 ₽</div>
+                        <div class="service-card__more">Прайс →</div>
+                    </div>
                 </div>
-                <div class="service-card reveal reveal-delay-1">
-                    <img src="img/car7.jpg" alt="Кондиционеры" class="service-card__image">
-                    <h3 class="service-card__title">Кондиционеры</h3>
-                    <p class="service-card__text">Заправка и ремонт кондиционеров.</p>
-                    <div class="service-card__price">от 1 200 ₽</div>
+                <div class="service-card reveal reveal-delay-1" onclick="openPrice('parts')">
+                    <img src="img/car7.jpg" alt="Продажа автозапчастей" class="service-card__image">
+                    <h3 class="service-card__title">Продажа автозапчастей</h3>
+                    <p class="service-card__text">Оригинал и аналоги под заказ. Подбор по VIN.</p>
+                    <div class="service-card__footer">
+                        <div class="service-card__price">по запросу</div>
+                        <div class="service-card__more">Прайс →</div>
+                    </div>
                 </div>
-                <div class="service-card reveal reveal-delay-2">
+                <div class="service-card reveal reveal-delay-2" onclick="openPrice('brakes')">
                     <img src="img/car8.jpg" alt="Тормозная система" class="service-card__image">
                     <h3 class="service-card__title">Тормозная система</h3>
                     <p class="service-card__text">Замена колодок, дисков, суппортов.</p>
-                    <div class="service-card__price">от 1 500 ₽</div>
+                    <div class="service-card__footer">
+                        <div class="service-card__price">от 1 500 ₽</div>
+                        <div class="service-card__more">Прайс →</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1412,8 +1531,16 @@
                     <div class="contact-info__item reveal reveal-delay-1">
                         <div class="contact-info__icon">📞</div>
                         <div>
-                            <div class="contact-info__label">Телефон</div>
+                            <div class="contact-info__label">Автосервис</div>
                             <div class="contact-info__value"><a href="tel:+79144476996">+7 914 447-69-96</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-info__item reveal reveal-delay-1">
+                        <div class="contact-info__icon">🛒</div>
+                        <div>
+                            <div class="contact-info__label">Магазин автозапчастей</div>
+                            <div class="contact-info__value"><a href="tel:+79644676996">+7 964 467-69-96</a></div>
+                            <div class="contact-info__hint">8 964 467-69-96</div>
                         </div>
                     </div>
                     <div class="contact-info__item reveal reveal-delay-2">
@@ -1427,7 +1554,7 @@
                         <div class="contact-info__icon">✉️</div>
                         <div>
                             <div class="contact-info__label">Email</div>
-                            <div class="contact-info__value"><a href="mailto:info@dvs-service.ru">info@dvs-service.ru</a></div>
+                            <div class="contact-info__value"><a href="mailto:www.alex130391@mail.ru">www.alex130391@mail.ru</a></div>
                         </div>
                     </div>
                 </div>
@@ -1451,7 +1578,7 @@
         </div>
     </footer>
 
-    <!-- ============ MODAL ============ -->
+    <!-- ============ MODAL: ЗАПИСЬ ============ -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <button class="modal__close" onclick="closeModal()">✕</button>
@@ -1479,6 +1606,23 @@
         </div>
     </div>
 
+    <!-- ============ MODAL: ПРАЙС-ЛИСТ ============ -->
+    <div class="modal-overlay" id="priceModal">
+        <div class="modal modal--wide">
+            <button class="modal__close" onclick="closePriceModal()">✕</button>
+            <h3 class="modal__title" id="priceModalTitle">Прайс-лист</h3>
+            <p class="modal__text" id="priceModalText">Актуальные цены на работы. Точная стоимость — после осмотра автомобиля.</p>
+            <div class="price-list" id="priceModalList"></div>
+            <div class="price-note" id="priceModalNote">
+                Цены указаны за работу без учёта стоимости запчастей. Точная смета — после диагностики.
+            </div>
+            <div class="price-actions">
+                <button class="btn-primary" onclick="closePriceModal(); openModal();">Записаться</button>
+                <a href="tel:+79144476996" class="btn-outline">📞 Позвонить</a>
+            </div>
+        </div>
+    </div>
+
     <!-- ============ TOAST ============ -->
     <div class="toast" id="toast">✅ Заявка отправлена! Мы свяжемся с вами.</div>
 
@@ -1487,10 +1631,122 @@
         const burger = document.getElementById('burger');
         const nav = document.getElementById('nav');
         const modalOverlay = document.getElementById('modalOverlay');
+        const priceModal = document.getElementById('priceModal');
         const toast = document.getElementById('toast');
 
+        // ============ ДАННЫЕ ПРАЙС-ЛИСТОВ ============
+        const PRICES = {
+            engine: {
+                title: 'Ремонт двигателей',
+                text: 'Капитальный и частичный ремонт ДВС. Точная цена — после диагностики.',
+                items: [
+                    { name: 'Замена ремня ГРМ', value: 'от 3 500 ₽' },
+                    { name: 'Замена прокладки ГБЦ', value: 'от 8 000 ₽' },
+                    { name: 'Замена маслосъёмных колпачков', value: 'от 6 000 ₽' },
+                    { name: 'Замена сальников коленвала', value: 'от 2 500 ₽' },
+                    { name: 'Замена поршневой группы', value: 'от 12 000 ₽' },
+                    { name: 'Капитальный ремонт ДВС', value: 'от 15 000 ₽' },
+                    { name: 'Замена опор двигателя', value: 'от 1 800 ₽' },
+                    { name: 'Замена цепи ГРМ', value: 'от 5 500 ₽' }
+                ]
+            },
+            diagnostics: {
+                title: 'Диагностика',
+                text: 'Точное выявление неисправностей на современном оборудовании.',
+                items: [
+                    { name: 'Компьютерная диагностика', value: 'от 1 000 ₽' },
+                    { name: 'Диагностика ходовой части', value: 'от 800 ₽' },
+                    { name: 'Диагностика электрики', value: 'от 1 200 ₽' },
+                    { name: 'Эндоскопия двигателя', value: 'от 1 500 ₽' },
+                    { name: 'Проверка перед покупкой авто', value: 'от 2 500 ₽' },
+                    { name: 'Диагностика кондиционера', value: 'от 900 ₽' }
+                ]
+            },
+            suspension: {
+                title: 'Ходовая часть',
+                text: 'Ремонт подвески и рулевого управления. Работаем с любыми марками.',
+                items: [
+                    { name: 'Замена амортизаторов (1 шт.)', value: 'от 2 500 ₽' },
+                    { name: 'Замена стоек стабилизатора', value: 'от 800 ₽' },
+                    { name: 'Замена шаровых опор', value: 'от 1 200 ₽' },
+                    { name: 'Замена рычагов', value: 'от 1 800 ₽' },
+                    { name: 'Замена подшипников ступицы', value: 'от 2 000 ₽' },
+                    { name: 'Замена рулевых наконечников', value: 'от 1 000 ₽' },
+                    { name: 'Сход-развал', value: 'от 2 000 ₽' }
+                ]
+            },
+            oil: {
+                title: 'Замена масла и фильтров',
+                text: 'Быстро и качественно. Подберём масло и расходники под ваш автомобиль.',
+                items: [
+                    { name: 'Замена масла ДВС', value: 'от 800 ₽' },
+                    { name: 'Замена масляного фильтра', value: 'от 400 ₽' },
+                    { name: 'Замена воздушного фильтра', value: 'от 500 ₽' },
+                    { name: 'Замена салонного фильтра', value: 'от 700 ₽' },
+                    { name: 'Замена топливного фильтра', value: 'от 1 500 ₽' },
+                    { name: 'Замена антифриза', value: 'от 1 200 ₽' },
+                    { name: 'Замена тормозной жидкости', value: 'от 1 200 ₽' }
+                ]
+            },
+            parts: {
+                title: 'Продажа автозапчастей',
+                text: 'Оригинал и качественные аналоги. Подбор по VIN или модели авто.',
+                items: [
+                    { name: 'Подбор запчастей по VIN', value: 'бесплатно' },
+                    { name: 'Оригинальные запчасти', value: 'по запросу' },
+                    { name: 'Аналоги (OEM)', value: 'по запросу' },
+                    { name: 'Расходники в наличии', value: 'по запросу' },
+                    { name: 'Доставка под заказ', value: 'от 1 дня' },
+                    { name: 'Масла и автохимия', value: 'по запросу' }
+                ]
+            },
+            brakes: {
+                title: 'Тормозная система',
+                text: 'Ремонт тормозов — безопасность превыше всего. Только проверенные запчасти.',
+                items: [
+                    { name: 'Замена передних колодок', value: 'от 1 500 ₽' },
+                    { name: 'Замена задних колодок', value: 'от 1 500 ₽' },
+                    { name: 'Замена тормозных дисков', value: 'от 2 500 ₽' },
+                    { name: 'Замена суппортов', value: 'от 3 500 ₽' },
+                    { name: 'Прокачка тормозной системы', value: 'от 1 000 ₽' },
+                    { name: 'Замена тормозных шлангов', value: 'от 1 200 ₽' },
+                    { name: 'Замена главного тормозного цилиндра', value: 'от 2 500 ₽' }
+                ]
+            }
+        };
+
+        // ============ ПРАЙС-ЛИСТ МОДАЛКА ============
+        const priceModalTitle = document.getElementById('priceModalTitle');
+        const priceModalText = document.getElementById('priceModalText');
+        const priceModalList = document.getElementById('priceModalList');
+
+        function openPrice(key) {
+            const data = PRICES[key];
+            if (!data) return;
+
+            priceModalTitle.textContent = data.title;
+            priceModalText.textContent = data.text;
+            priceModalList.innerHTML = data.items.map(item => `
+                <div class="price-row">
+                    <div class="price-row__name">${item.name}</div>
+                    <div class="price-row__value">${item.value}</div>
+                </div>
+            `).join('');
+
+            priceModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePriceModal() {
+            priceModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        priceModal.addEventListener('click', (e) => {
+            if (e.target === priceModal) closePriceModal();
+        });
+
         // ============ HEADER HEIGHT -> CSS VAR ============
-        // Динамически измеряем высоту шапки, чтобы панель ровно стыковалась под ней
         function updateHeaderHeight() {
             const h = header.offsetHeight;
             document.documentElement.style.setProperty('--header-h', h + 'px');
@@ -1523,7 +1779,7 @@
             });
         });
 
-        // ============ MODAL ============
+        // ============ MODAL (ЗАПИСЬ) ============
         function openModal() {
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1539,8 +1795,9 @@
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-                closeModal();
+            if (e.key === 'Escape') {
+                if (modalOverlay.classList.contains('active')) closeModal();
+                if (priceModal.classList.contains('active')) closePriceModal();
             }
         });
 
